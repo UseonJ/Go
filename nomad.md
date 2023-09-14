@@ -52,12 +52,23 @@ so if u use struct instead of map you should use pointers
 ## Slow URL CHecker
 
 ## Goroutines
+time > Go 패키지
+time.Sleep(time.Second)
+보통 첫 함수를 순차적으로 프린트하고, 그 다음 함수를 프린트함
+
+go 라고 적어줌으로써 병렬로 배치됨.
+
+그런데, goroutine은 메인함수가 실행되는 동안에만 작동할 수 있음.
+
+time.Sleep(time.Second * 5) 를 추가하면 5초동안 유지된다.
 
 ## Channels
 
 ## Channels Recap
 
 ## One more Recap
+Remember : receiving a message is blocking operation!!
+
 
 ## URLChecker + Go Routines
 
