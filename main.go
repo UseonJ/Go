@@ -2,8 +2,13 @@ package main
 
 import (
 	"fmt"
-	"time"
+	"log"
+	"net/http"
+
+	"github.com/PuerkitoBio/goquery"
 )
+
+var baseURL string = "https://kr.indeed.com/jobs?q=%ED%8C%8C%EC%9D%B4%EC%8D%AC&limit50=&vjk=d19b63e763f4cab0"
 
 func main() {
 	// account := accounts.NewAccount("nicolas")
@@ -27,20 +32,52 @@ func main() {
 	// 	}
 	// }
 
-	c := make(chan bool)
-	people := []string{"Ace", "Bear", "Chache", "Dag"}
-	for _, person := range people {
-		go isSexy(person, c)
-	}
+	// 	c := make(chan bool)
+	// 	people := []string{"Ace", "Bear", "Chache", "Dag"}
+	// 	for _, person := range people {
+	// 		go isSexy(person, c)
+	// 	}
 
-	for i := 0; i < len(people); i++ {
-		fmt.Println(<-c)
-	}
+	// 	for i := 0; i < len(people); i++ {
+	// 		fmt.Println(<-c)
+	// 	}
+
+	// }
+
+	// func isSexy(person string, c chan bool) {
+	// 	time.Sleep(time.Second * 2)
+	// 	fmt.Println(person)
+	// 	c <- true
+
+	// #4 get Pages
+
+	getPages()
 
 }
 
-func isSexy(person string, c chan bool) {
-	time.Sleep(time.Second * 2)
-	fmt.Println(person)
-	c <- true
+func getPages() int {
+	res, err := http.Get(baseURL)
+	checkErr(err)
+	checkCode(res)
+
+	defer res.Body.Close()
+
+	doc, err := goquery.NewDocumentFromReader(res.Body)
+	checkErr(err)
+
+	fmt.Println(doc)
+
+	return 0
+}
+
+func checkErr(err error) {
+	if err != nil {
+		log.Fatalln(err)
+	}
+}
+
+func checkCode(res *http.Response) {
+	if res.StatusCode != 200 {
+		log.Fatalln("Request failed with Status:", res.StatusCode)
+	}
 }
